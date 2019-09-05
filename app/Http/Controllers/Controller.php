@@ -20,7 +20,7 @@ class Controller extends BaseController
             'code' => 200,
             'values' => $values ?? [],
             'message' => $message ?? ""
-        ]);
+        ], 200);
     }
 
     public function notFound($values, $message){
@@ -28,7 +28,7 @@ class Controller extends BaseController
             'code' => 404,
             'values' => $values ?? [],
             'message' => $message ?? ""
-        ]);
+        ], 404);
     }
 
     public function unAuthorized($values, $message){
@@ -36,7 +36,7 @@ class Controller extends BaseController
             'code' => 401,
             'values' => $values ?? [],
             'message' => $message ?? ""
-        ]);
+        ], 401);
     }
 
     public function badRequest($values, $message){
@@ -44,7 +44,7 @@ class Controller extends BaseController
             'code' => 400,
             'values' => $values ?? [],
             'message' => $message ?? ""
-        ]);
+        ], 400);
     }
 
     public function internalServerError($values, $message){
@@ -52,7 +52,7 @@ class Controller extends BaseController
             'code' => 503,
             'values' => $values ?? [],
             'message' => $message ?? ""
-        ]);
+        ], 503);
     }
 
 

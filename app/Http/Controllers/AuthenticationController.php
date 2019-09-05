@@ -67,7 +67,7 @@ class AuthenticationController extends Controller
         }
         catch (\Exception $e){
             Log::error($e->getMessage());
-            return false;
+            return $this->ok('', 'Oops....');
         }
     }
 
