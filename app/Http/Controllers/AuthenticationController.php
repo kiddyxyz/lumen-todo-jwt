@@ -42,27 +42,33 @@ class AuthenticationController extends Controller
     }
 
     public function create(Request $request){
-        $client_id = md5(Carbon::now());
-        $client_secret = md5(rand(10000,999999));
-        $name =  $request->name;
-        $email = $request->email;
+        try{
+            $client_id = md5(Carbon::now());
+            $client_secret = md5(rand(10000,999999));
+            $name =  $request->name;
+            $email = $request->email;
 
-        $check = User::where('email', $email)->first();
-        if($check){
-            $this->sendMail($email, $name, $check->client_id, $check->client_secret);
-            return $this->badRequest('', "$email has been registered!");
+            $check = User::where('email', $email)->first();
+            if($check){
+                $this->sendMail($email, $name, $check->client_id, $check->client_secret);
+                return $this->badRequest('', "$email has been registered!");
+            }
+
+            $user = new User();
+            $user->name = $name;
+            $user->email = $email;
+            $user->client_id = $client_id;
+            $user->client_secret = $client_secret;
+            $user->save();
+
+            $this->sendMail($email, $name, $client_id, $client_secret);
+
+            return $this->ok($user, "Created!");
         }
-
-        $user = new User();
-        $user->name = $name;
-        $user->email = $email;
-        $user->client_id = $client_id;
-        $user->client_secret = $client_secret;
-        $user->save();
-
-        $this->sendMail($email, $name, $client_id, $client_secret);
-
-        return $this->ok($user, "Created!");
+        catch (\Exception $e){
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
     private function sendMail($email, $name, $client_id, $client_secret){
